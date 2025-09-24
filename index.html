@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>স্বাগতম</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* আপনার CSS কোড এখানে অপরিবর্তিত থাকবে */
+        body { margin: 0; font-family: 'Poppins', sans-serif; background-color: #111827; color: #ffffff; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; }
+        .content-box { position: relative; z-index: 2; text-align: center; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 50px 40px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); max-width: 650px; width: 90%; }
+        .title { font-size: 22px; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .message { font-size: 18px; color: rgba(255, 255, 255, 0.85); line-height: 1.8; margin-bottom: 40px; }
+        .signup-button { display: inline-block; background: #ffffff; color: #111827; padding: 16px 35px; text-decoration: none; border-radius: 50px; font-size: 18px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); }
+        .signup-button:hover { background: #f0f0f0; transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3); }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <div class="content-box">
+        <h1 id="title" class="title">লোড হচ্ছে...</h1>
+        <p id="message" class="message"></p>
+        <!-- এই লাইনে target="_blank" সরিয়ে দেওয়া হয়েছে -->
+        <a id="signupButton" href="#" class="signup-button">Signup Now</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.9.3/tsparticles.bundle.min.js"></script>
+    
+    <!-- Firebase SDK স্ক্রিপ্ট -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyBQK_wQAlw8TvBSw3sOxKRtkONjoq_jyAc",
+        authDomain: "lending-page-4c6ac.firebaseapp.com",
+        databaseURL: "https://lending-page-4c6ac-default-rtdb.firebaseio.com",
+        projectId: "lending-page-4c6ac",
+        storageBucket: "lending-page-4c6ac.firebasestorage.app",
+        messagingSenderId: "674375388277",
+        appId: "1:674375388277:web:98f1af14fc51074f023c3c"
+      };
+        
+        // Firebase চালু করুন
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Firebase থেকে রিয়েল-টাইমে ডেটা লোড করার স্ক্রিপ্ট
+        document.addEventListener('DOMContentLoaded', function() {
+            const contentRef = database.ref('content');
+            
+            // onValue রিয়েল-টাইমে কাজ করে। অ্যাডমিন প্যানেলে কিছু পরিবর্তন করলে এখানে সাথে সাথে আপডেট হবে
+            contentRef.on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const content = snapshot.val();
+                    document.getElementById('title').textContent = content.title;
+                    document.getElementById('message').textContent = content.message;
+                    document.getElementById('signupButton').href = content.signupLink;
+                    document.title = content.title || 'স্বাগতম';
+                } else {
+                    // যদি কোনো ডেটা না থাকে, ডিফল্ট মেসেজ দেখাবে
+                    document.getElementById('title').textContent = 'স্বাগতম';
+                    document.getElementById('message').textContent = 'এখনও কোনো কনটেন্ট যোগ করা হয়নি।';
+                }
+            });
+        });
+
+        // আপনার tsParticles এর কোড অপরিবর্তিত থাকবে
+        tsParticles.load("particles-js", {
+            background: { color: { value: "#111827" } },
+            fpsLimit: 60,
+            interactivity: { events: { onHover: { enable: true, mode: "repulse" }, resize: true }, modes: { repulse: { distance: 100, duration: 0.4 } } },
+            particles: { color: { value: "#ffffff" }, links: { color: "#ffffff", distance: 150, enable: true, opacity: 0.2, width: 1 }, collisions: { enable: true }, move: { direction: "none", enable: true, outModes: { default: "bounce" }, random: false, speed: 1.5, straight: false }, number: { density: { enable: true, area: 800 }, value: 80 }, opacity: { value: 0.3 }, shape: { type: "circle" }, size: { value: { min: 1, max: 5 } } },
+            detectRetina: true
+        });
+    </script> 
+
+</body>
+</html>
